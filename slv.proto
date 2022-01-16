@@ -1,0 +1,111 @@
+// Copyright (c) Puneeth Rao Lokapalli 2022. All rights reserved.
+// Licensed under the Apache license. See LICENSE file in the project root for full license information.
+
+//protoc -Iproto/ -I/usr/local/include --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative proto/slv.proto
+
+syntax = "proto3";
+
+option go_package = "lprao/slvpb";
+
+package slvpb;
+
+// List of serverless ledger variable types
+enum VarType {
+	// Variable type boolean
+	BOOL = 0;
+	// Variable type int32
+	INT32 = 1;
+	// Variable type uunsigned int32
+	UINT32 = 2;
+	// Variable type int64
+	INT64 = 3;
+	// Variable type unsigned int64
+	UINT64 = 4;
+	// Variable type double
+	DOUBLE = 5;
+	// Variable type float
+	FLOAT = 6;
+	// Variable type string
+	STRING = 7;
+	// Variable type bytes
+	BYTES = 8;
+	// Variable type map
+	MAP = 9;
+	// Variable type user defined structure
+	USER_DEFINED = 10;
+	// Variable type bitmap
+    BITMAP = 11;
+}
+
+// List of serverless ledger variable scopes
+enum VarScope {
+	// Scope of the variable is private only to the serverless function
+	PRIVATE = 0;
+	// Scope of the variable is public. Other functions can access the value.
+	PUBLIC = 1;
+}
+
+// List of serverless ledger variable permissions
+enum VarPermissions {
+	// Read only permissions for the variable
+	READONLY = 0;
+	// Read and write permissions for the variable
+	READWRITE = 1;
+}
+
+// Serverless ledger variable message
+message SlvVar {
+	// Name of the variable
+	string name = 1;
+	// Value of the variable
+	bytes val = 2;
+	// Type of the variable
+	VarType type = 3;
+	// Scope of the variable
+	VarScope scope = 4;
+	// Permissions of the variable
+	VarPermissions permissions = 5;
+}
+
+// List of operations that can be performed on a serverless ledger variable.
+// TODO: add more types.
+enum Operation {
+	// Create a new variable operation
+	NEW = 0;
+	// Get the value of a variable
+	GET = 1;
+	// Set the value of a variable
+	SET = 2;
+	// Perform add operation on variable
+	ADD = 3;
+	// Perform subtract operation on variable
+	SUB = 4;
+	// Perform multiply operation on variable
+	MUL = 5;
+	// Perform divide operation on variable
+	DIV = 6;
+}
+
+// Execute operation request message
+message ExecOpReq {
+	// Type of operation to perform on the variable
+	Operation operation = 1;
+	// Variable on which operation must be performed
+	SlvVar var = 2;
+	// Access token to authorize the operation
+	string accessToken = 3;
+}
+
+// Execute operation response message
+message ExecOpResp {
+	// Ouput response
+	SlvVar var = 1;
+	// optional error field
+	string err = 2;
+}
+
+// Service methods offered by slv-svc
+service LvSvc {
+	// Perfrom the requested operation and provide the response.
+	rpc Op(ExecOpReq) returns (ExecOpResp) {}
+}
