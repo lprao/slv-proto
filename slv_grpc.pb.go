@@ -14,88 +14,88 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// LvSvcClient is the client API for LvSvc service.
+// SlvSvcClient is the client API for SlvSvc service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type LvSvcClient interface {
+type SlvSvcClient interface {
 	// Perfrom the requested operation and provide the response.
 	Op(ctx context.Context, in *ExecOpReq, opts ...grpc.CallOption) (*ExecOpResp, error)
 }
 
-type lvSvcClient struct {
+type slvSvcClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewLvSvcClient(cc grpc.ClientConnInterface) LvSvcClient {
-	return &lvSvcClient{cc}
+func NewSlvSvcClient(cc grpc.ClientConnInterface) SlvSvcClient {
+	return &slvSvcClient{cc}
 }
 
-func (c *lvSvcClient) Op(ctx context.Context, in *ExecOpReq, opts ...grpc.CallOption) (*ExecOpResp, error) {
+func (c *slvSvcClient) Op(ctx context.Context, in *ExecOpReq, opts ...grpc.CallOption) (*ExecOpResp, error) {
 	out := new(ExecOpResp)
-	err := c.cc.Invoke(ctx, "/slvpb.LvSvc/Op", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/slvpb.SlvSvc/Op", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// LvSvcServer is the server API for LvSvc service.
-// All implementations must embed UnimplementedLvSvcServer
+// SlvSvcServer is the server API for SlvSvc service.
+// All implementations must embed UnimplementedSlvSvcServer
 // for forward compatibility
-type LvSvcServer interface {
+type SlvSvcServer interface {
 	// Perfrom the requested operation and provide the response.
 	Op(context.Context, *ExecOpReq) (*ExecOpResp, error)
-	mustEmbedUnimplementedLvSvcServer()
+	mustEmbedUnimplementedSlvSvcServer()
 }
 
-// UnimplementedLvSvcServer must be embedded to have forward compatible implementations.
-type UnimplementedLvSvcServer struct {
+// UnimplementedSlvSvcServer must be embedded to have forward compatible implementations.
+type UnimplementedSlvSvcServer struct {
 }
 
-func (UnimplementedLvSvcServer) Op(context.Context, *ExecOpReq) (*ExecOpResp, error) {
+func (UnimplementedSlvSvcServer) Op(context.Context, *ExecOpReq) (*ExecOpResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Op not implemented")
 }
-func (UnimplementedLvSvcServer) mustEmbedUnimplementedLvSvcServer() {}
+func (UnimplementedSlvSvcServer) mustEmbedUnimplementedSlvSvcServer() {}
 
-// UnsafeLvSvcServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to LvSvcServer will
+// UnsafeSlvSvcServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SlvSvcServer will
 // result in compilation errors.
-type UnsafeLvSvcServer interface {
-	mustEmbedUnimplementedLvSvcServer()
+type UnsafeSlvSvcServer interface {
+	mustEmbedUnimplementedSlvSvcServer()
 }
 
-func RegisterLvSvcServer(s grpc.ServiceRegistrar, srv LvSvcServer) {
-	s.RegisterService(&LvSvc_ServiceDesc, srv)
+func RegisterSlvSvcServer(s grpc.ServiceRegistrar, srv SlvSvcServer) {
+	s.RegisterService(&SlvSvc_ServiceDesc, srv)
 }
 
-func _LvSvc_Op_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SlvSvc_Op_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ExecOpReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LvSvcServer).Op(ctx, in)
+		return srv.(SlvSvcServer).Op(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/slvpb.LvSvc/Op",
+		FullMethod: "/slvpb.SlvSvc/Op",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LvSvcServer).Op(ctx, req.(*ExecOpReq))
+		return srv.(SlvSvcServer).Op(ctx, req.(*ExecOpReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// LvSvc_ServiceDesc is the grpc.ServiceDesc for LvSvc service.
+// SlvSvc_ServiceDesc is the grpc.ServiceDesc for SlvSvc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var LvSvc_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "slvpb.LvSvc",
-	HandlerType: (*LvSvcServer)(nil),
+var SlvSvc_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "slvpb.SlvSvc",
+	HandlerType: (*SlvSvcServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Op",
-			Handler:    _LvSvc_Op_Handler,
+			Handler:    _SlvSvc_Op_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

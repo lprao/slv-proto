@@ -34,7 +34,7 @@ enum VarType {
 	// Variable type user defined structure
 	USER_DEFINED = 10;
 	// Variable type bitmap
-    BITMAP = 11;
+	BITMAP = 11;
 }
 
 // List of serverless ledger variable scopes
@@ -92,8 +92,6 @@ message ExecOpReq {
 	Operation operation = 1;
 	// Variable on which operation must be performed
 	SlvVar var = 2;
-	// Access token to authorize the operation
-	string accessToken = 3;
 }
 
 // Execute operation response message
@@ -105,7 +103,7 @@ message ExecOpResp {
 }
 
 // Service methods offered by slv-svc
-service LvSvc {
+service SlvSvc {
 	// Perfrom the requested operation and provide the response.
 	rpc Op(ExecOpReq) returns (ExecOpResp) {}
 }
